@@ -1,0 +1,32 @@
+# Database driver: mysql, pgsql, sqlite
+driver = mysql
+
+# Database connection string. This is driver-specific setting.
+#
+# HA / round-robin load-balancing is supported by giving multiple host
+# settings, like: host=sql1.host.org host=sql2.host.org
+#
+# mysql:
+#   Basic options emulate PostgreSQL option names:
+#     host, port, user, password, dbname
+#
+connect = host=127.0.0.1 dbname=smtpd user=smtpduser password=smtpdpass
+
+# Default password scheme.
+#
+# List of supported schemes is in
+# http://wiki2.dovecot.org/Authentication/PasswordSchemes
+#
+# default_pass_scheme = PLAIN
+default_pass_scheme = SHA512-CRYPT
+
+# Commonly used available substitutions (see http://wiki2.dovecot.org/Variables
+# for full list):
+#   %u = entire user@domain
+#   %n = user part of user@domain
+#   %d = domain part of user@domain
+
+password_query = \
+  SELECT user, password \
+  FROM userinfo WHERE user = '%u'
+
